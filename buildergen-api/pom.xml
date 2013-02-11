@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>info.piwai.buildergen</groupId>
 		<artifactId>buildergen-parent</artifactId>
-		<version>0.3-db1</version>
+		<version>0.3-db2-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>info.piwai.buildergen</groupId>
