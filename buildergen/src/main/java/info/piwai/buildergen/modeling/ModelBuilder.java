@@ -24,10 +24,7 @@ import info.piwai.buildergen.helper.ElementHelper;
 import info.piwai.buildergen.processing.BuilderGenProcessor;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Generated;
 import javax.lang.model.element.ExecutableElement;
@@ -79,6 +76,8 @@ public class ModelBuilder {
 
 		Set<ExecutableElement> constructors = elementHelper.findAccessibleConstructors(buildableElement);
 
+        Map<String, ExecutableElement> publicMethods = elementHelper.findPublicMethods(buildableElement);
+
 		ExecutableElement constructor = elementHelper.findBuilderConstructor(constructors);
 
 		JDefinedClass builderClass = codeModel._class(builderFullyQualifiedName);
@@ -92,6 +91,9 @@ public class ModelBuilder {
 				.param("value", BuilderGenProcessor.class.getName()) //
 				.param("date", isoDateFormat.format(new Date())) //
 		;
+
+        JMethod copyConst = builderClass.constructor(JMod.PUBLIC);
+        JVar originalParam = copyConst.param(buildableClass, "original");
 
 		List<? extends VariableElement> parameters = constructor.getParameters();
 		for (VariableElement parameter : parameters) {
@@ -122,6 +124,12 @@ public class ModelBuilder {
 					.append("this, ie the ") //
 					.append(builderClass) //
 					.append(" instance, to enable chained calls.");
+
+            String getMethodSuffix = Character.toUpperCase(paramName.charAt(0)) + paramName.substring(1);
+            String getMethodName = publicMethods.containsKey("get" + getMethodSuffix) ? "get" + getMethodSuffix :
+                                        "is" + getMethodSuffix;
+            copyConst.body() //
+                    .assign(_this().ref(setterField), originalParam.invoke(getMethodName));
 		}
 
 		List<VariableElement> mandatoryParameters = new ArrayList<VariableElement>();
@@ -212,7 +220,9 @@ public class ModelBuilder {
 						.append(" class.") //
 				;
 			}
-		}
+		} else {
+            builderClass.constructor(JMod.PUBLIC);
+        }
 
 		JMethod createMethod = builderClass.method(JMod.PUBLIC | JMod.STATIC, builderClass, "create");
 		JBlock createBody = createMethod.body();

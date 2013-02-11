@@ -17,9 +17,7 @@ package info.piwai.buildergen.helper;
 
 import info.piwai.buildergen.api.Build;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -28,7 +26,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 
 /**
- * A helper that centralize some code to deal with constructors
+ * A helper that centralize some code to deal with constructors and methods
  * 
  * @author Pierre-Yves Ricau (py.ricau at gmail.com)
  */
@@ -51,6 +49,23 @@ public class ElementHelper {
 		}
 		return constructors;
 	}
+
+    /**
+     * @return all public methods available for the given {@link TypeElement}
+     */
+    public Map<String, ExecutableElement> findPublicMethods(TypeElement buildableElement) {
+        Map<String, ExecutableElement> publicMethods = new LinkedHashMap<String, ExecutableElement>();
+        List<? extends Element> enclosedElements = buildableElement.getEnclosedElements();
+        for (Element enclosedElement : enclosedElements) {
+            ElementKind enclosedElementKind = enclosedElement.getKind();
+            if (enclosedElementKind == ElementKind.METHOD) {
+                if (enclosedElement.getModifiers().contains(Modifier.PUBLIC)) {
+                    publicMethods.put(enclosedElement.getSimpleName().toString(), (ExecutableElement) enclosedElement);
+                }
+            }
+        }
+        return publicMethods;
+    }
 
 	/**
 	 * @return the constructor that the builder should use
