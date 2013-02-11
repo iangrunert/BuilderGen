@@ -261,6 +261,27 @@ public class ModelBuilder {
 				.append("instance") //
 		;
 
+        JMethod createCloneMethod = builderClass.method(JMod.PUBLIC | JMod.STATIC, builderClass, "create");
+        JVar originalVar = createCloneMethod.param(buildableClass, "original");
+        createCloneMethod.body()
+                ._return(JExpr._new(builderClass)
+                                    .arg(originalVar));
+
+
+        JDocComment createCloneJavadoc = createCloneMethod.javadoc();
+        createCloneJavadoc.addParam(originalVar) //
+        						.append("the instance to copy") //
+        				;
+
+        createCloneJavadoc.append("Static factory method for a copy of an") //
+                .append(builderClass) //
+                .append(" instance.") //
+                .addReturn() //
+                .append("a new ") //
+                .append(builderClass) //
+                .append("instance with its properties copied from the original") //
+        ;
+
 		addBuilderClassJavadoc(builderClass, buildableClass);
 	}
 
