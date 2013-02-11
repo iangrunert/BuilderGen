@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>info.piwai.buildergen</groupId>
+		<groupId>org.twdata.info.piwai.buildergen</groupId>
 		<artifactId>buildergen-parent</artifactId>
 		<version>0.3-db2-SNAPSHOT</version>
 	</parent>
 	
-	<groupId>info.piwai.buildergen</groupId>
+	<groupId>org.twdata.info.piwai.buildergen</groupId>
 	<artifactId>buildergen-api</artifactId>
 	<name>BuilderGen API</name>
 	<description>This project contains the BuilderGen API</description>

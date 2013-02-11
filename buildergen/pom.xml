@@ -2,13 +2,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>info.piwai.buildergen</groupId>
+		<groupId>org.twdata.info.piwai.buildergen</groupId>
 		<artifactId>buildergen-parent</artifactId>
 		<version>0.3-db2-SNAPSHOT</version>
 	</parent>
 
 
-	<groupId>info.piwai.buildergen</groupId>
+	<groupId>org.twdata.info.piwai.buildergen</groupId>
 	<artifactId>buildergen</artifactId>
 	<name>BuilderGen</name>
 	<description>Generation of builders using @Builder annotation</description>
@@ -20,7 +20,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>info.piwai.buildergen</groupId>
+			<groupId>org.twdata.info.piwai.buildergen</groupId>
 			<artifactId>buildergen-api</artifactId>
 		</dependency>
 		<dependency>
